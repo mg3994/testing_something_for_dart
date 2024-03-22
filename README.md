@@ -179,3 +179,42 @@ enum Type {
 }
 
 ```
+
+
+# Testing
+
+```dart
+import 'platform_native.dart' if (dart.library.html) 'platform_web.dart';
+
+abstract class Platform {
+  bool get isTesting;
+  static final Platform instance = makePlatform();
+}
+```
+
+```dart
+
+import 'dart:io' as io show Platform;
+
+import 'platform.dart';
+
+Platform makePlatform() => PlatformNative();
+
+class PlatformNative extends Platform {
+  @override
+  bool get isTesting => io.Platform.environment.containsKey('FLUTTER_TEST');
+}
+```
+
+
+```dart
+
+import 'platform.dart';
+
+Platform makePlatform() => PlatformWeb();
+
+class PlatformWeb extends Platform {
+  @override
+  bool get isTesting => false;
+}
+```
